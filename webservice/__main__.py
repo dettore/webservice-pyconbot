@@ -33,7 +33,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
 @router.register("issue_comment", action="created")
 async def issue_comment_created_event(event, gh, *args, **kwargs):
     """Thumbs up for a comment on an issue"""
-    url = f"{event.data['issue']['comment']['url']}/reactions"
+    url = f"{event.data['comment']['url']}/reactions"
     user = event.data["comment"]["user"]["login"]
     if user == 'dettore':
         await gh.post(url,
