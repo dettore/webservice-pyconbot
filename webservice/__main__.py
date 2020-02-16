@@ -51,7 +51,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     # POST /repos/:owner/:repo/issues/:pull_number/comments
     
     url = event.data["pull_request"]["issue_url"]
-    labels = '["needs review"]'
+    labels = ["needs review"]
     await gh.post(url, data={"labels": labels})
 
 @routes.post("/")
