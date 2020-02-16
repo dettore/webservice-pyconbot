@@ -40,6 +40,20 @@ async def issue_comment_created_event(event, gh, *args, **kwargs):
                         data={"content": "+1"},
                         accept="application/vnd.github.squirrel-girl-preview")
 
+@router.register("pull_request", action="opened")
+async def issue_opened_event(event, gh, *args, **kwargs):
+    """ On a new PR, add label needs review"""
+    
+    # Each time someone opens a pull request, 
+    # have it automatically apply a label. 
+    # This can be a “pending review” or “needs review” label.
+
+    # POST /repos/:owner/:repo/issues/:pull_number/comments
+    
+    url = event.data["pull_request"]["issue_url"]
+    labels = '["needs review"]'
+    await gh.post(url, data={"labels": labels})
+
 @routes.post("/")
 async def main(request):
     # read the GitHub webhook payload
