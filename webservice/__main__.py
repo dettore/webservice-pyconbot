@@ -30,6 +30,16 @@ async def issue_opened_event(event, gh, *args, **kwargs):
         message = f"Thanks for the PR @{user}"
         await gh.post(url, data={"body": message})
 
+@router.register("issue_comment", action="created")
+async def issue_comment_created_event(event, gh, *args, **kwargs):
+    """Thumbs up for a comment on an issue"""
+    url = f"{event.data['issue']['comment']['url']}/reactions"
+    user = event.data["comment"]["user"]["login"]
+    if user == 'dettore':
+        await gh.post(url,
+                        data={"content": "+1"},
+                        accept="application/vnd.github.squirrel-girl-preview")
+
 @routes.post("/")
 async def main(request):
     # read the GitHub webhook payload
