@@ -29,9 +29,11 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     if is_merged:
         message = f"Thanks for the PR @{user}"
         await gh.post(url, data={"body": message})
+        # TODO February 17, 2020: delete comments after function tested
         # automatically delete a merged branch
-        # DELETE /repos/:owner/:repo/git/refs/:ref
         # DELETE /repos/octocat/Hello-World/git/refs/heads/feature-a
+        # TODO February 17, 2020: remove try/except after delete working
+        # TODO February 17, 2020: build url from PR payload instead of harcoding
         try:
             branch_name = event.data["pull_request"]["head"]["ref"]
             url = f"/repos/dettore/galaxy-prophet/git/refs/heads/{branch_name}"
@@ -55,6 +57,7 @@ async def issue_comment_created_event(event, gh, *args, **kwargs):
 async def issue_opened_event(event, gh, *args, **kwargs):
     """ On a new PR, add label needs review"""
     
+    # TODO February 17, 2020: delete comments after function tested
     # Each time someone opens a pull request, 
     # have it automatically apply a label. 
     # This can be a “pending review” or “needs review” label.
@@ -77,7 +80,7 @@ async def main(request):
     # a representation of GitHub webhook event
     event = sansio.Event.from_http(request.headers, body, secret=secret)
 
-    # instead of mariatta, use your own username
+    # use your own username
     async with aiohttp.ClientSession() as session:
         gh = gh_aiohttp.GitHubAPI(session, "dettore",
                                   oauth_token=oauth_token)
