@@ -34,7 +34,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
         # DELETE /repos/octocat/Hello-World/git/refs/heads/feature-a
         try:
             branch_name = event.data["pull_request"]["head"]["ref"]
-            url = f"/repos/dettore/galaxy_prophet/git/refs/heads/{branch_name}"
+            url = f"/repos/dettore/galaxy-prophet/git/refs/heads/{branch_name}"
             print ("url: " + url)
             await gh.delete(url)
         except:
