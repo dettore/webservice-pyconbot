@@ -32,7 +32,7 @@ async def issue_opened_event(event, gh, *args, **kwargs):
         # automatically delete a merged branch
         # DELETE /repos/:owner/:repo/git/refs/:ref
         branch_name = event.data["pull_request"]["head"]["ref"]
-        url = f"/repos/dettore/galaxy_prophet/git/refs/heads/{branch_name}"
+        url = f"/repos/dettore/galaxy_prophet/git/refs/{branch_name}"
         print ("url: " + url)
         await gh.delete(url)
         
