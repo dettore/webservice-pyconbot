@@ -31,10 +31,13 @@ async def issue_opened_event(event, gh, *args, **kwargs):
         await gh.post(url, data={"body": message})
         # automatically delete a merged branch
         # DELETE /repos/:owner/:repo/git/refs/:ref
-        branch_name = event.data["pull_request"]["head"]["ref"]
-        url = f"/repos/dettore/galaxy_prophet/git/refs/{branch_name}"
-        print ("url: " + url)
-        await gh.delete(url)
+        try:
+            branch_name = event.data["pull_request"]["head"]["ref"]
+            url = f"/repos/dettore/galaxy_prophet/git/refs/{branch_name}"
+            print ("url: " + url)
+            await gh.delete(url)
+        except:
+            print("Issue deleting the merged branch")
         
 
 @router.register("issue_comment", action="created")
