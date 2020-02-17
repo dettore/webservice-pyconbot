@@ -29,6 +29,12 @@ async def issue_opened_event(event, gh, *args, **kwargs):
     if is_merged:
         message = f"Thanks for the PR @{user}"
         await gh.post(url, data={"body": message})
+        # automatically delete a merged branch
+        # DELETE /repos/:owner/:repo/git/refs/:ref
+        branch_name = event.data["pull_request"]["head"]["ref"]
+        url = f"/repos/dettore/galaxy_prophet/git/refs/heads/{branch_name}"
+        await gh.delete(url)
+        
 
 @router.register("issue_comment", action="created")
 async def issue_comment_created_event(event, gh, *args, **kwargs):
